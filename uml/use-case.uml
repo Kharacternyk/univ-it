@@ -1,0 +1,32 @@
+@startuml
+
+left to right direction
+
+:Адміністратор БД: as admin
+
+admin --> (Завантажити БД з диску)
+admin --> (Вивантажити БД на диск)
+admin --> (Додати таблицю до БД)
+
+(Обрати не поточну таблицю з БД) as pickTable
+
+(Обрати іншу таблицю в якості поточної) as activateTable
+admin --> activateTable
+activateTable ..> pickTable : <<include>>
+
+(Прибрати таблицю з БД) as removeTable
+admin --> removeTable
+removeTable ..> pickTable : <<include>>
+
+admin --> (Змінити ім'я поточної таблиці)
+admin --> (Додати рядок до поточної таблиці)
+admin --> (Прибрати рядок з поточної таблиці)
+admin --> (Змінити значення у рядку з поточної таблиці)
+admin --> (Додати стовпчик до поточної таблиці)
+admin --> (Прибрати стовпчик з поточної таблиці)
+
+(Обчислити різницю поточної таблиці з певною таблицею) as diffTable
+admin --> diffTable
+pickTable ..> diffTable : <<extend>>
+
+@enduml

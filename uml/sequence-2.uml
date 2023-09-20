@@ -1,0 +1,30 @@
+@startuml
+title Різниця таблиць
+
+actor Користувач as user
+boundary DatabaseScaffold
+boundary TableScaffold
+control "State<TableScaffold>" as state
+entity Table
+
+activate user
+user -> TableScaffold : Натискання кнопки "Table Difference"
+activate TableScaffold
+TableScaffold -> state : onPressed()
+activate state
+state -> DatabaseScaffold : selectTable()
+activate DatabaseScaffold
+DatabaseScaffold -> user : Показ діалогу вибору таблиці
+user -> DatabaseScaffold : Вибір таблиці
+DatabaseScaffold -> state : return path
+deactivate DatabaseScaffold
+state -> Table : removeFrom()
+activate Table
+Table -> state : return
+deactivate Table
+state -> TableScaffold : setState()
+deactivate state
+TableScaffold -> user : Показ різниці таблиць
+deactivate TableScaffold
+
+@enduml

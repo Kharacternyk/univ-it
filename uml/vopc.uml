@@ -1,0 +1,24 @@
+@startuml
+
+class TableScaffold<Boundary> {
+    - Table table
+    - Future<Table?> Function() selectTable
+}
+
+class DatabaseScaffold_State<Controller> {
+    - Database database
+}
+
+class Database<Entity> {
+    + List<Table> get tables() 
+}
+
+class Table<Entity> {
+    + void removeFrom(Table)
+}
+
+TableScaffold -> DatabaseScaffold_State
+DatabaseScaffold_State -> Database
+TableScaffold -> Table
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+
+hide empty description
+
+state "Показ таблиці" as table
+state "Показ меню операцій над базою даних" as db
+state "Показ форми вибору файлу" as file
+state "Показ діалогу вибору таблиці" as dialog
+
+[*] --> table 
+table --> db : Натискання кнопки меню
+db --> table : Закриття меню
+db --> file : Завантаження чи вивантаження бази даних
+file --> db : Вибір файлу
+table --> dialog : Натискання кнопки різниці таблиць
+dialog --> table : Вибір таблиці
+table --> [*]
+db --> [*]
+dialog --> [*]
+
+@enduml

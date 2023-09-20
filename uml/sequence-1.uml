@@ -1,0 +1,30 @@
+@startuml
+title Завантаження бази даних з диску
+
+actor Користувач as user
+boundary DatabaseScaffold
+boundary FileSelector
+control "State<DatabaseScaffold>" as state
+entity Database
+
+activate user
+user -> DatabaseScaffold : Натискання кнопки "Open Database"
+activate DatabaseScaffold
+DatabaseScaffold -> state : onPressed()
+activate state
+state -> FileSelector : await openFile()
+activate FileSelector
+FileSelector -> user : Показ форми вибору файлу
+user -> FileSelector : Вибір файлу
+FileSelector -> state : return path
+deactivate FileSelector
+state -> Database : Database.fromJson
+activate Database
+Database -> state : return database
+deactivate Database
+state -> DatabaseScaffold : setState()
+deactivate state
+DatabaseScaffold -> user : Показ завантаженої бази даних
+deactivate DatabaseScaffold
+
+@enduml

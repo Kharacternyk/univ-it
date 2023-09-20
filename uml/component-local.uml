@@ -1,0 +1,14 @@
+@startuml
+[Ядро СКБД] as core
+() "API різниці таблиць" as diff
+() "API JSON серіалізації та десеріалізації" as json
+core --> diff : Надає
+core --> json : Надає
+[Локальний інтерфейс СКБД] as gui
+diff <-- gui : Використовує
+json <-- gui : Використовує
+[Графічна бібліотека Flutter] as flutter
+() "API побудови користувацького інтерфейсу" as guiApi
+flutter --> guiApi : Надає
+guiApi <-- gui : Використовує
+@enduml

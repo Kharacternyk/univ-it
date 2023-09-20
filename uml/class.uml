@@ -1,0 +1,85 @@
+@startuml
+
+class Character {
+    + int get code()
+    + void set code(int)
+    + String get value()
+    + Object toJson()
+    + {static} Character fromJson(Object?)
+}
+
+class CharacterInterval {
+    + Character get start()
+    + Character get end()
+    + void set start(Character)
+    + void set end(Character)
+    + Object toJson()
+    + {static} CharacterInterval fromJson(Object?)
+}
+
+CharacterInterval o-- Character
+
+class CharacterIntervalString {
+    + List<CharacterInterval> get intervals()
+    + void set intervals(List<CharacterInterval>)
+    + Object toJson()
+    + {static} CharacterIntervalString fromJson(Object?)
+}
+
+CharacterIntervalString o-- CharacterInterval
+
+abstract class Column<T extends Object?> {
+    + String get name()
+    + List<T> get cells()
+    + void set name(String)
+    + void addDefault()
+    + Object toJson()
+    + {static} Column<Object> fromJson(Object?) 
+    # T? parseCell(Object?)
+    # {abstract} String get typeCode()
+    # {abstract} T createDefault()
+    - Column<T>? parse(String, String, List<Object?>)
+}
+
+class IntegerColumn<T extends int>
+class RealColumn<T extends double>
+class CharacterColumn<T extends Character>
+class CharacterIntervalColumn<T extends CharacterInterval>
+class CharacterIntervalStringColumn<T extends CharacterIntervalString>
+
+Column <|-- IntegerColumn
+Column <|-- RealColumn
+Column <|-- CharacterColumn
+Column <|-- CharacterIntervalColumn
+Column <|-- CharacterIntervalStringColumn
+
+CharacterColumn o-- Character
+CharacterIntervalColumn o-- CharacterInterval
+CharacterIntervalStringColumn o-- CharacterIntervalString
+
+class Table {
+    + String get name()
+    + List<Column<Object>> get columns()
+    + void set name(String)
+    + void removeFrom(Table)
+    + Object toJson()
+    + {static} Table fromJson(Object?)
+}
+
+Table o-- Column
+
+class Database {
+    + List<Table> get tables()
+    + Object toJson()
+    + {static} Database fromJson(Object?)
+}
+
+Database o-- Table
+
+class Row {
+    + List<Object> get cells()
+}
+
+Table --> Row
+
+@enduml

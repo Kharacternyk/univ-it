@@ -1,0 +1,33 @@
+@startuml
+[Ядро СКБД] as core
+() "API різниці таблиць" as diff
+() "API JSON серіалізації та десеріалізації" as json
+core --> diff : Надає
+core --> json : Надає
+
+[Сервер СКБД] as server
+diff <-- server : Використовує
+json <-- server : Використовує
+
+() "REST API" as rest
+() "GraphQL API" as graphQl
+() "gRPC API" as gRpc
+
+server --> rest : Надає
+server --> graphQl : Надає
+server --> gRpc : Надає
+
+[Web REST застосунок] as web
+
+rest <-- web : Використовує
+json <-- web : Використовує
+
+[Web GraphQL застосунок] as graph
+
+graphQl <-- graph : Використовує
+
+[Мобільний GraphQL застосунок] as app
+
+gRpc <-- app : Використовує
+json <-- app : Використовує
+@enduml

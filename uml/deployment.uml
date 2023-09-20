@@ -1,0 +1,21 @@
+@startuml
+
+actor Користувач as user
+
+card ПК {
+    card Браузер as browser
+}
+
+user <-> browser : Інтерфейс користувача
+
+cloud "Апаратний сервер" {
+    card "Сервер СКБД" as server {
+        card "Підсистема HTTP/REST" as rest
+        card "Підсистема ядра СКБД" as core
+    }
+}
+
+browser <-> rest : REST API
+rest <-> core
+
+@enduml
