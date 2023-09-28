@@ -17,7 +17,7 @@ class CharacterInterval {
     + {static} CharacterInterval fromJson(Object?)
 }
 
-CharacterInterval o-- Character
+CharacterInterval "1" o-- "2" Character
 
 class CharacterIntervalString {
     + List<CharacterInterval> get intervals()
@@ -26,7 +26,7 @@ class CharacterIntervalString {
     + {static} CharacterIntervalString fromJson(Object?)
 }
 
-CharacterIntervalString o-- CharacterInterval
+CharacterIntervalString "1" o-- "0:∞" CharacterInterval
 
 abstract class Column<T extends Object?> {
     + String get name()
@@ -53,9 +53,9 @@ Column <|-- CharacterColumn
 Column <|-- CharacterIntervalColumn
 Column <|-- CharacterIntervalStringColumn
 
-CharacterColumn o-- Character
-CharacterIntervalColumn o-- CharacterInterval
-CharacterIntervalStringColumn o-- CharacterIntervalString
+CharacterColumn "1" o-- "1" Character
+CharacterIntervalColumn "1" o-- "1" CharacterInterval
+CharacterIntervalStringColumn "1" o-- "1" CharacterIntervalString
 
 class Table {
     + String get name()
@@ -66,7 +66,7 @@ class Table {
     + {static} Table fromJson(Object?)
 }
 
-Table o-- Column
+Table "1" o-- "0:∞" Column
 
 class Database {
     + List<Table> get tables()
@@ -74,7 +74,7 @@ class Database {
     + {static} Database fromJson(Object?)
 }
 
-Database o-- Table
+Database "1" o-- "0:∞" Table
 
 class Row {
     + List<Object> get cells()
