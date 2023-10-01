@@ -1,0 +1,295 @@
+openapi: 3.0.0
+info:
+  title: Database API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8123
+
+paths:
+  /databases/{name}:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      operationId: createDatabase
+    get:
+      operationId: getDatabase
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    columns:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          type:
+                            type: string
+                            enum:
+                              - i
+                              - r
+                              - c
+                              - s
+                              - ci
+                              - cis
+                          cells:
+                            type: array
+                            items:
+                              type: object
+    post:
+      operationId: modifyDatabase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+    delete:
+      operationId: deleteDatabase
+
+  /databases/{name}/tables:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      operationId: createTable
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  index:
+                    type: integer
+
+  /databases/{databaseName}/tables/{tableIndex}:
+    parameters:
+      - name: databaseName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tableIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getTable
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                            - i
+                            - r
+                            - c
+                            - s
+                            - ci
+                            - cis
+                        cells:
+                          type: array
+                          items:
+                            type: object
+    post:
+      operationId: modifyTable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                removeFrom:
+                  type: integer
+    delete:
+      operationId: deleteTable
+
+  /databases/{databaseName}/tables/{tableIndex}/columns:
+    parameters:
+      - name: databaseName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tableIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+    put:
+      operationId: createColumn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - i
+                    - r
+                    - c
+                    - s
+                    - ci
+                    - cis
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  index:
+                    type: integer
+
+  /databases/{databaseName}/tables/{tableIndex}/columns/{columnIndex}:
+    parameters:
+      - name: databaseName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tableIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: columnIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getColumn
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - i
+                      - r
+                      - c
+                      - s
+                      - ci
+                      - cis
+                  cells:
+                    type: array
+                    items:
+                      type: object
+    post:
+      operationId: modifyColumn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+    delete:
+      operationId: deleteColumn
+
+  /databases/{databaseName}/tables/{tableIndex}/rows:
+    parameters:
+      - name: databaseName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tableIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+    put:
+      operationId: createRow
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  index:
+                    type: integer
+
+  /databases/{databaseName}/tables/{tableIndex}/rows/{rowIndex}/cells/{cellIndex}:
+    parameters:
+      - name: databaseName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tableIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: rowIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: cellIndex
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getCell
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: modifyCell
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
