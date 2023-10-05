@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "swagger_client"
+name = "graphql-server"
 version = "0.1.0"
 description = ""
 authors = ["Nazar Vinnichuk <nazar@vinnich.uk>"]
@@ -7,10 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-certifi = "^2023.7.22"
-six = "^1.16.0"
-python-dateutil = "^2.8.2"
-urllib3 = "^2.0.5"
+strawberry-graphql = {extras = ["debug-server"], version = "^0.209.5"}
+swagger-client = {path = "../openapi_client/", develop = true}
 
 
 [build-system]

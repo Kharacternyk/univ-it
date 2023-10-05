@@ -1,0 +1,77 @@
+mutation initializeDatabase($databaseName: String!) {
+  createDatabase(name: $databaseName)
+  firstTable: createTable(databaseName: $databaseName, tableName: "First")
+  secondTable: createTable(databaseName: $databaseName, tableName: "Second")
+  firstColumn: createColumn(
+    databaseName: $databaseName
+    tableIndex: 0
+    columnName: "Integer Column"
+    columnType: "i"
+  )
+  secondColumn: createColumn(
+    databaseName: $databaseName
+    tableIndex: 0
+    columnName: "String Column"
+    columnType: "s"
+  )
+  firstColumnCopy: createColumn(
+    databaseName: $databaseName
+    tableIndex: 1
+    columnName: "Integer Column"
+    columnType: "i"
+  )
+  secondColumnCopy: createColumn(
+    databaseName: $databaseName
+    tableIndex: 1
+    columnName: "String Column"
+    columnType: "s"
+  )
+  row0_0: createRow(databaseName: $databaseName, tableIndex: 0)
+  row1_0: createRow(databaseName: $databaseName, tableIndex: 0)
+  row2_0: createRow(databaseName: $databaseName, tableIndex: 0)
+  row0_1: createRow(databaseName: $databaseName, tableIndex: 1)
+  row1_1: createRow(databaseName: $databaseName, tableIndex: 1)
+  row2_1: createRow(databaseName: $databaseName, tableIndex: 1)
+  integer0_0: modifyCell(
+    databaseName: $databaseName
+    tableIndex: 0
+    rowIndex: 0
+    cellIndex: 0
+    integer: 42
+  )
+  string2_1: modifyCell(
+    databaseName: $databaseName
+    tableIndex: 1
+    rowIndex: 2
+    cellIndex: 1
+    string: "ABCDEF"
+  )
+}
+
+query getDatabase($databaseName: String!) {
+  database(name: $databaseName) {
+    tables {
+      name
+      columns {
+        name
+        type
+        cells {
+          ... on IntegerCell {
+            integer: value
+          }
+          ... on StringCell {
+            string: value
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation tableDifference($databaseName: String!) {
+  tableDifference(
+    databaseName: $databaseName
+    modifiedTableIndex: 0
+    otherTableIndex: 1
+  )
+}
