@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+service DatabaseService {
+    rpc DownloadDatabase(DatabaseHandle) returns (Database) {}
+    rpc UploadDatabase(NamedDatabase) returns (Void) {}
+    rpc DeleteDatabase(DatabaseHandle) returns (Void) {}
+
+    rpc DiffTables(TableDiff) returns (Void) {}
+}
+
+message TableDiff {
+    DatabaseHandle database = 1;
+    uint32 leftTableIndex = 2;
+    uint32 rightTableIndex = 3;
+}
+
+message DatabaseHandle {
+    string name = 1;
+}
+
+message NamedDatabase {
+    string name = 1;
+    Database database = 2;
+}
+
+message Database {
+    repeated Table tables = 1;
+}
+
+message Table {
+    string name = 1;
+    repeated Column columns = 2;
+}
+
+message Column {
+    string name = 1;
+    ColumnType type = 2;
+    repeated Cell cells = 3;
+}
+
+message Cell {
+    oneof value {
+        string stringValue = 1;
+        int32 integerValue = 2;
+    }
+}
+
+enum ColumnType {
+    stringColumn = 0;
+    integerColumn = 1;
+}
+
+message Void {
+}

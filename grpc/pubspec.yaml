@@ -1,0 +1,14 @@
+name: grpcdb
+version: 1.0.0
+
+environment:
+  sdk: ^3.0.6
+
+dependencies:
+  core:
+    path: ../core
+  grpc: ^3.2.4
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
