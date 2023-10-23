@@ -1,0 +1,21 @@
+name: android_grpc_gui
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.2 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  grpcdb:
+    path: ../grpc
+  grpc: ^3.2.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
