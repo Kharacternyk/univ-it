@@ -8,13 +8,72 @@ const server = http.createServer((request, response) => {
 
 const wsdl = fs.readFileSync("database.wsdl", "utf8");
 
+const restUrl = "http://localhost:8123/";
+
 const service = {
   DatabaseService: {
     DatabasePort: {
-      CreateDatabase: (arguments) => {
-        console.log(arguments);
+      CreateDatabase: async (database, respond) => {
+        const url = restUrl + "databases/" + database.name;
 
-        return { ok: true };
+        await fetch(url, { method: "put" });
+
+        for (const table of database.table ?? []) {
+          const tablesUrl = url + "/tables";
+          const response = await fetch(tablesUrl, { method: "put" });
+          const responseBody = await response.json();
+          const tableUrl = tablesUrl + "/" + responseBody.index;
+
+          await fetch(tableUrl, {
+            method: "post",
+            body: JSON.stringify({ name: table.name }),
+          });
+
+          for (const column of table.column ?? []) {
+            const columnsUrl = tableUrl + "/columns";
+            const response = await fetch(columnsUrl, {
+              method: "put",
+              body: JSON.stringify({ type: "s" }),
+            });
+            const responseBody = await response.json();
+            const columnUrl = columnsUrl + "/" + responseBody.index;
+
+            await fetch(columnUrl, {
+              method: "post",
+              body: JSON.stringify({ name: column.name }),
+            });
+          }
+
+          let rowCount = 0;
+
+          if (table.column && table.column[0] && table.column[0].cell) {
+            rowCount = table.column[0].cell.length;
+          }
+
+          for (let i = 0; i < rowCount; ++i) {
+            await fetch(tableUrl + "/rows", {
+              method: "put",
+            });
+          }
+
+          let columnIndex = 0;
+
+          for (const column of table.column ?? []) {
+            for (let i = 0; i < rowCount; ++i) {
+              await fetch(
+                tableUrl + "/columns/" + columnIndex + "/cells/" + i,
+                {
+                  method: "post",
+                  body: JSON.stringify(column.cell[i]),
+                }
+              );
+            }
+
+            ++columnIndex;
+          }
+        }
+
+        respond({ ok: true });
       },
 
       GetDatabase: (arguments) => {
