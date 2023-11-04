@@ -16,6 +16,12 @@ const service = {
 
         return { ok: true };
       },
+
+      GetDatabase: (arguments) => {
+        console.log(arguments);
+
+        return { name: "hello" };
+      },
     },
   },
 };
