@@ -1,0 +1,61 @@
+<definitions
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://localhost/database"
+    xmlns:schema="https://localhost/schemas"
+    targetNamespace="http://localhost/database"
+>
+    <types>
+        <xsd:schema
+            elementFormDefault="qualified"
+            targetNamespace="https://localhost/schemas"
+        >
+            <xsd:element name="DatabaseElement">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="name" type="xsd:string" />
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="StatusElement">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="ok" type="xsd:boolean" />
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="CreateDatabaseRequest">
+        <part element="schema:DatabaseElement" name="CreateDatabaseRequest" />
+    </message>
+
+    <message name="CreateDatabaseResponse">
+        <part element="schema:StatusElement" name="CreateDatabaseResponse" />
+    </message>
+
+    <portType name="DatabasePortType">
+        <operation name="CreateDatabase">
+            <input message="tns:CreateDatabaseRequest" />
+            <output message="tns:CreateDatabaseResponse" />
+        </operation>
+    </portType>
+
+    <binding name="DatabaseBinding" type="tns:DatabasePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="CreateDatabase">
+            <soap:operation soapAction="CreateDatabase" />
+            <input><soap:body use="literal" /></input>
+            <output><soap:body use="literal" /></output>
+        </operation>
+    </binding>
+
+    <service name="DatabaseService">
+        <port binding="tns:DatabaseBinding" name="DatabasePort">
+            <soap:address location="http://localhost:8000/wsdl" />
+        </port>
+    </service>
+</definitions>
