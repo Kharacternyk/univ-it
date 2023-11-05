@@ -44,6 +44,16 @@
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
+
+            <xsd:element name="TableDifferenceElement">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="databaseName" type="xsd:string" />
+                        <xsd:element name="leftTableIndex" type="xsd:integer" />
+                        <xsd:element name="rightTableIndex" type="xsd:integer" />
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:schema>
     </types>
 
@@ -63,6 +73,14 @@
         <part element="schema:DatabaseElement" name="GetDatabaseResponse" />
     </message>
 
+    <message name="TableDifferenceRequest">
+        <part element="schema:TableDifferenceElement" name="TableDifferenceRequest" />
+    </message>
+
+    <message name="TableDifferenceResponse">
+        <part element="schema:StatusElement" name="TableDifferenceResponse" />
+    </message>
+
     <portType name="DatabasePortType">
         <operation name="CreateDatabase">
             <input message="tns:CreateDatabaseRequest" />
@@ -72,6 +90,11 @@
         <operation name="GetDatabase">
             <input message="tns:GetDatabaseRequest" />
             <output message="tns:GetDatabaseResponse" />
+        </operation>
+
+        <operation name="TableDifference">
+            <input message="tns:TableDifferenceRequest" />
+            <output message="tns:TableDifferenceResponse" />
         </operation>
     </portType>
 
@@ -86,6 +109,12 @@
 
         <operation name="GetDatabase">
             <soap:operation soapAction="GetDatabase" />
+            <input><soap:body use="literal" /></input>
+            <output><soap:body use="literal" /></output>
+        </operation>
+
+        <operation name="TableDifference">
+            <soap:operation soapAction="TableDifference" />
             <input><soap:body use="literal" /></input>
             <output><soap:body use="literal" /></output>
         </operation>

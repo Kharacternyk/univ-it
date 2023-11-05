@@ -13,7 +13,7 @@ const restUrl = "http://localhost:8123/";
 const service = {
   DatabaseService: {
     DatabasePort: {
-      CreateDatabase: async (database, respond) => {
+      CreateDatabase: async (database) => {
         const url = restUrl + "databases/" + database.name;
 
         await fetch(url, { method: "put" });
@@ -73,13 +73,44 @@ const service = {
           }
         }
 
-        respond({ ok: true });
+        return { ok: true };
       },
 
-      GetDatabase: (arguments) => {
-        console.log(arguments);
+      GetDatabase: async (name) => {
+        const url = restUrl + "databases/" + name;
+        const response = await fetch(url);
+        const database = await response.json();
 
-        return { name: "hello" };
+        return {
+          name,
+          table: database.map((table) => {
+            return {
+              name: table.name,
+              column: table.columns.map((column) => {
+                return {
+                  name: column.name,
+                  cell: column.cells,
+                };
+              }),
+            };
+          }),
+        };
+      },
+
+      TableDifference: async ({
+        databaseName,
+        leftTableIndex,
+        rightTableIndex,
+      }) => {
+        const url =
+          restUrl + "databases/" + databaseName + "/tables/" + leftTableIndex;
+
+        await fetch(url, {
+          method: "post",
+          body: JSON.stringify({ removeFrom: rightTableIndex }),
+        });
+
+        return { ok: true };
       },
     },
   },
