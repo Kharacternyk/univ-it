@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "remote-server"
+version = "0.1.0"
+description = ""
+authors = ["Nazar Vinnichuk <nazar@vinnich.uk>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyro5 = "^5.15"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
